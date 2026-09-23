@@ -253,7 +253,7 @@ dialog::backdrop{background:#13242c88;backdrop-filter:blur(3px)}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}
 }
 
-/* Figma's renderer uses grayscale antialiasing and a slightly cooler canvas. */
+/* Use grayscale antialiasing and a slightly cooler canvas. */
 body{-webkit-font-smoothing:antialiased;--bg:#eceef0}
 
 .section-title{align-items:flex-start}
