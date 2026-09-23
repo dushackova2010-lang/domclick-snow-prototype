@@ -11,6 +11,21 @@
   const mobile = matchMedia('(max-width:1023px)');
   const N = 150;
   const FADE_ZONE = 105;
+  const grainTile = document.createElement('canvas');
+  grainTile.width = grainTile.height = 160;
+  const grainCtx = grainTile.getContext('2d');
+  let grainSeed = 31991;
+  const grainRandom = () => ((grainSeed = (grainSeed * 1664525 + 1013904223) >>> 0) / 4294967296);
+  for (let i = 0; i < 1400; i++) {
+    const light = i % 5 === 0;
+    grainCtx.fillStyle = light
+      ? `rgba(255,255,255,${.18 + grainRandom() * .28})`
+      : `rgba(105,153,184,${.055 + grainRandom() * .1})`;
+    grainCtx.beginPath();
+    grainCtx.arc(grainRandom() * 160, grainRandom() * 160, .25 + grainRandom() * .6, 0, Math.PI * 2);
+    grainCtx.fill();
+  }
+  const grainPattern = ctx.createPattern(grainTile, 'repeat');
 
   // One height field belongs to the viewport floor, independently of document content.
   const cards = [0].map(() => {
@@ -133,16 +148,18 @@
       const { x, y, w } = card.rect;
       if (y < -4 || y > height + 30) continue;
       ctx.save();
-      const fill = ctx.createLinearGradient(0, y - 24, 0, y + 3);
-      fill.addColorStop(0, '#fff');
-      fill.addColorStop(.65, '#fbfdff');
-      fill.addColorStop(1, '#dcebf5');
+      const maxSnow = Math.max(...card.h);
+      const fill = ctx.createLinearGradient(0, y - maxSnow, 0, y + 1);
+      fill.addColorStop(0, '#f5fafe');
+      fill.addColorStop(.3, '#fcfeff');
+      fill.addColorStop(.8, '#fff');
+      fill.addColorStop(1, '#f5fafd');
       ctx.fillStyle = fill;
-      ctx.strokeStyle = 'rgba(122,151,174,.72)';
-      ctx.lineWidth = .9;
-      ctx.shadowColor = 'rgba(56,82,105,.42)';
-      ctx.shadowBlur = 18;
-      ctx.shadowOffsetY = -6;
+      ctx.strokeStyle = 'rgba(122,151,174,.35)';
+      ctx.lineWidth = .7;
+      ctx.shadowColor = 'rgba(56,82,105,.19)';
+      ctx.shadowBlur = 30;
+      ctx.shadowOffsetY = -4;
       ctx.beginPath();
       ctx.moveTo(x, y + 1);
       ctx.lineTo(x, y - card.h[0]);
@@ -159,6 +176,27 @@
       ctx.shadowColor = 'transparent';
       ctx.shadowOffsetY = 0;
       ctx.stroke();
+      ctx.save();
+      ctx.clip();
+      if (grainPattern) {
+        ctx.fillStyle = grainPattern;
+        ctx.fillRect(x, y - maxSnow, w, maxSnow + 1);
+      }
+      for (let j = 0, count = Math.ceil(w / 88); j < count; j++) {
+        const gx = x + (j + .35 + .22 * Math.sin(j * 9.7)) * w / count;
+        const surface = y - card.h[indexAt(card, gx)];
+        if (y - surface < 18) continue;
+        const gy = surface + 9 + (j % 3) * 4;
+        ctx.fillStyle = 'rgba(139,181,205,.2)';
+        ctx.beginPath();
+        ctx.ellipse(gx, gy, 3.5, 1.2, -.25, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,.85)';
+        ctx.beginPath();
+        ctx.ellipse(gx - .4, gy - .5, 2.1, .6, -.25, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
       ctx.restore();
     }
 
