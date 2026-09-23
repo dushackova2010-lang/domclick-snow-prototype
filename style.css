@@ -1,0 +1,319 @@
+@font-face{font-family:SB Text;src:url('assets/SBSansText-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+
+@font-face{font-family:SB Text;src:url('assets/SBSansText-Medium.ttf') format('truetype');font-weight:500;font-display:swap}
+
+@font-face{font-family:SB Display;src:url('assets/SBSansDisplay-SemiBold.ttf') format('truetype');font-weight:600;font-display:swap}
+
+:root{--ink:#262626;--muted:#738295;--blue:#1175da;--green:#009e36;--field:#e7eef3;--bg:#edeef0}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 14px/20px 'SB Text',sans-serif}
+button,input,textarea{font:inherit;color:inherit}
+button{border:0;background:none;padding:0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-align:inherit}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+button:hover{filter:brightness(.97)}
+p,h1,h2,dl,dd{margin:0}
+h1,h2,.price-row strong{font-family:'SB Display',sans-serif;font-weight:600}
+h1,h2{font-size:24px;line-height:32px}
+img{display:block}
+.icon{width:16px;height:16px;flex:0 0 16px;object-fit:contain}
+.icon-button{width:40px;height:40px;flex-shrink:0;border-radius:8px}
+.mobile-only,.mobile-header,.mobile-price,.gallery-compare,.map-chips{display:none}
+.header{height:93px;background:#fff;position:relative;z-index:40}
+.header-inner{max-width:1180px;margin:auto}
+.topbar{height:41px;border-bottom:1px solid #e5e5e5}
+.top-inner{height:40px;display:flex;justify-content:space-between}
+.top-item{padding:10px 16px;height:40px;color:var(--muted);font-weight:500;white-space:nowrap}
+.top-item.first{padding-left:0}
+.top-item.last{padding-right:0}
+.top-right{display:flex;align-items:center;justify-content:flex-end;flex:1}
+.top-icon{width:48px}
+.top-icon:first-child{width:32px}
+.navbar{height:52px;display:flex;gap:8px}
+.logo{position:relative;flex-shrink:0;padding-right:16px;height:52px}
+.navbar .logo{width:145.488px;padding:0;justify-content:flex-start}
+.logo-art{position:relative;display:flex;align-items:center;gap:4px;width:133px;height:32px;flex-shrink:0}
+.logo-symbol{width:32px;height:32px;flex-shrink:0}
+.logo-name{width:97px;height:22px;flex-shrink:0}
+.navbar nav{display:flex;gap:32px;align-items:center;overflow:hidden;flex:1}
+.navbar nav button{color:var(--muted);font-weight:500;white-space:nowrap;height:52px}
+.samolet{width:79.701px;height:36px}
+.page{max-width:1192px;display:grid;grid-template-columns:minmax(0,792fr) minmax(344px,392fr);gap:8px;margin:24px auto 71px;align-items:start}
+.left-column{min-width:0;display:flex;flex-direction:column;gap:8px}
+.card{background:#fff;border-radius:20px}
+.hero{min-width:0;position:relative}
+.gallery{height:420px;position:relative;overflow:hidden;border-radius:20px 20px 0 0}
+.gallery-track{height:100%;display:flex;gap:4px;overflow:auto;scrollbar-width:none;scroll-behavior:smooth}
+.gallery-track::-webkit-scrollbar{display:none}
+.photo{height:100%;flex:0 0 34.596%;border-radius:16px;overflow:hidden;cursor:zoom-in;position:relative}
+.photo-2{flex-basis:77.6515%}
+.photo-3{flex-basis:70.707%}
+.photo-4{flex-basis:78.409%}
+.listing-photo{height:100%;width:100%;object-fit:cover}
+.gallery-arrow{position:absolute;top:calc(50% - 20px);background:rgba(36,38,41,.64);border-radius:50%}
+.gallery-arrow.prev{left:12px}
+.gallery-arrow.next{right:12px}
+.gallery-controls{position:absolute;bottom:12px;left:12px;right:12px;display:flex;gap:12px;align-items:center;pointer-events:none}
+.gallery-controls button{pointer-events:auto}
+.gallery-tabs{background:rgba(36,38,41,.64);border-radius:360px;padding:4px;display:flex;gap:4px;align-items:center}
+.gallery-tab{height:32px;padding:7px 12px;border-radius:360px;color:#fff;white-space:nowrap;font-weight:500;line-height:18px;letter-spacing:-.28px}
+.gallery-tab.active{background:#fff;color:var(--ink)}
+.plan-button{height:40px;background:rgba(36,38,41,.64);color:#fff;border-radius:360px;padding:11px 12px;font-weight:500;line-height:18px;letter-spacing:-.28px}
+.location{padding:24px;display:flex;gap:16px;position:relative;border-radius:0 0 20px 20px;background:#fff}
+.location-info{min-width:0;flex:1}
+.location h1{white-space:nowrap;font-size:24px;line-height:32px;overflow:hidden;text-overflow:ellipsis}
+.location-links{display:flex;gap:12px;margin-top:4px;height:32px;align-items:center;white-space:nowrap}
+.text-link{color:var(--blue);font-size:14px;font-weight:500;letter-spacing:-.28px;line-height:18px;gap:4px;height:32px;white-space:nowrap}
+.address{display:flex;gap:8px;align-items:center;height:24px;white-space:nowrap;letter-spacing:-.28px;line-height:18px}
+.address .copy{width:16px;height:24px;flex-shrink:0;border-radius:0}
+.address p{min-width:0}
+.metro{display:flex;gap:12px;margin-top:4px;font-size:14px;line-height:18px;letter-spacing:-.28px}
+.metro-item{display:flex;gap:4px;align-items:center;white-space:nowrap}
+.metro-time{color:var(--muted)}
+.metro-item .icon{width:16px;height:16px}
+.metro-item .icon:last-child{margin-left:-4px}
+.map{width:200px;height:114px;flex-shrink:0;border-radius:12px;overflow:hidden;position:relative}
+.map picture,.map img{width:100%;height:100%;object-fit:fill}
+.details{padding:24px}
+.spec-columns{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.section-title{display:flex;align-items:center;justify-content:space-between;min-height:32px}
+.building .section-title{height:34px}
+.spec-columns dl{margin-top:16px;font-size:14px;line-height:18px;letter-spacing:-.28px}
+.spec-columns dl>div{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:8px}
+.spec-columns dl>div:last-child{margin-bottom:0}
+dt{color:var(--muted)}
+.more-button{background:var(--field);border-radius:8px;padding:7px 12px;height:32px;font-weight:500;letter-spacing:-.28px;line-height:18px;margin-top:16px}
+.building-buttons{display:flex;gap:4px;align-items:center;margin-top:16px;height:44.142px}
+.building-buttons .more-button{height:40px;margin:0;padding:11px 16px}
+.house-photos{background:var(--field);border-radius:8px;height:40px;width:160px;overflow:hidden;padding-left:20px;gap:8px;flex-shrink:0;font-weight:500;letter-spacing:-.28px;line-height:18px}
+.house-photos>span:first-child{flex:1;white-space:nowrap}
+.mini-photos{width:53.142px;height:44.142px;position:relative;flex-shrink:0}
+.mini-photo{position:absolute;top:5px;width:32px;height:32px;border-radius:8px;object-fit:cover}
+.mini-photo.one{right:18px;transform:rotate(-8deg)}
+.mini-photo.two{right:0;top:12px;transform:rotate(8deg)}
+.description{margin-top:24px}
+.description h2{font-size:18px;line-height:28px}
+.description-copy{margin-top:8px;position:relative;line-height:20px;height:60px;overflow:hidden}
+.description-copy p{font-size:14px;line-height:20px;letter-spacing:0}
+.read-more-wrap{position:absolute;bottom:0;right:0;background:#fff;display:flex;gap:8px;align-items:center;height:20px}
+.read-more-wrap .text-link{height:20px}
+.description-copy.expanded{height:auto;padding-bottom:25px}
+.rail{padding-top:8px}
+.offer-actions{padding:0 8px;display:flex;gap:4px;height:40px}
+.offer-actions button{flex:1}
+.rail-content{padding:16px 24px 24px;display:flex;flex-direction:column;gap:24px}
+.object-line{font-size:14px;line-height:18px;letter-spacing:-.28px;padding-bottom:8px}
+.object-line span{color:var(--muted)}
+.price-row{display:flex;align-items:center;gap:12px}
+.price-row strong{font-size:32px;line-height:40px;white-space:nowrap}
+.history{position:relative;width:32px;height:32px;border-radius:8px;background:var(--field);flex-shrink:0}
+.price-trend{position:absolute;right:-4px;top:-4px;transform:scaleY(-1);width:16px;height:16px;background:white;border-radius:12px}
+.unit-price{color:var(--muted);font-size:14px;line-height:18px;letter-spacing:-.28px;margin-top:4px}
+.mortgage{height:60px;width:100%;border-radius:12px;padding:6px 8px 6px 4px;gap:4px;background:#f4f5f6;text-align:left;white-space:nowrap}
+.coins{width:48px;height:48px;object-fit:contain;flex-shrink:0}
+.mortgage-first{padding-right:12px;flex-shrink:0}
+.mortgage-second{border-left:1px solid #d5d9df;padding-left:15px;flex:1;min-width:0;margin-right:8px}
+.mortgage strong{font-size:14px;line-height:20px;font-weight:500;display:block}
+.mortgage small{font-size:12px;line-height:16px;letter-spacing:-.12px;color:var(--muted);display:block}
+.seller{display:flex;gap:12px;height:60px}
+.avatar{position:relative;width:56px;height:56px;flex-shrink:0}
+.avatar-photo{width:56px;height:56px;border-radius:50%;object-fit:cover}
+.agency-logo{position:absolute;width:24px;height:24px;bottom:0;right:0;border-radius:4px;border:2px solid #fff;object-fit:cover}
+.seller-info{padding-top:0;min-width:0}
+.seller-name{display:flex;gap:4px;align-items:center;font-size:16px;line-height:20px;letter-spacing:-.32px;font-weight:500}
+.seller-info p{color:var(--muted);font-size:14px;line-height:18px;letter-spacing:-.28px;margin-top:2px;white-space:nowrap}
+.seller-info>span{font-size:14px;line-height:18px}
+.contact-buttons{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.primary,.secondary{height:56px;padding:17px 20px;border-radius:8px;gap:8px;font-weight:500;font-size:14px;line-height:18px;letter-spacing:-.28px;white-space:nowrap}
+.primary{background:var(--green);color:#fff}
+.secondary{background:var(--field)}
+.contact-row{display:flex;gap:8px}
+.contact-row>button{flex:1;padding-left:10px;padding-right:10px}
+.ask-seller h2{font-size:20px;line-height:28px;margin-bottom:16px}
+.question-form{border-radius:8px;background:var(--field);padding:10px 16px;display:flex;flex-direction:column;gap:8px;height:86px}
+.question-top{display:flex;gap:8px;align-items:center}
+.question-top textarea{border:0;resize:none;outline:0;background:transparent;width:100%;height:40px;padding:0;line-height:20px;font-size:16px;font-weight:500;letter-spacing:-.32px;overflow:hidden}
+.question-top button{width:16px;height:40px}
+.counter{display:block;text-align:right;font-size:14px;line-height:18px;letter-spacing:-.28px;color:var(--muted);font-weight:500}
+.question-chips{display:flex;flex-wrap:wrap;gap:8px;padding-top:12px}
+.question-chip{height:32px;border-radius:8px;border:1px solid #a8b4bd;padding:6px 10px;line-height:18px;letter-spacing:-.28px;white-space:nowrap}
+.question-chip.selected{border:2px solid #00a739;padding:5px 9px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+#snow-canvas{position:fixed;inset:0;z-index:50;pointer-events:none;width:100%;height:100%}
+#snow-hits{position:fixed;top:0;left:0;z-index:51;pointer-events:none}
+.snow-hit{position:absolute;height:28px;border:0;background:transparent;pointer-events:auto;touch-action:none;cursor:none;border-radius:12px}
+.snow-hit[hidden]{display:none}
+#shovel{position:fixed;width:72px;height:72px;display:none;pointer-events:none;z-index:52;object-fit:contain;filter:drop-shadow(0 3px 4px rgba(28,55,69,.28));user-select:none;transform:scaleX(var(--shovel-flip,1));transform-origin:center;transition:transform 120ms ease-out}
+.snow-clearing,.snow-clearing *{cursor:none!important}
+.snow-clearing #shovel{display:block}
+#snow-trigger{position:fixed;left:12px;bottom:12px;width:60px;height:60px;z-index:53;border-radius:0;background:transparent;box-shadow:none;overflow:visible;touch-action:manipulation;isolation:isolate}
+#snow-trigger img{width:68px;height:68px;max-width:none;flex:0 0 68px;object-fit:contain;pointer-events:none;user-select:none;filter:drop-shadow(0 3px 5px rgba(35,65,83,.24));transition:transform 180ms ease}
+#snow-trigger:hover img{transform:scale(1.06) rotate(8deg)}
+#snow-trigger.is-active img{animation:snow-trigger-spin 2.4s linear infinite}
+#snow-trigger:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+@keyframes snow-trigger-spin{to{transform:rotate(360deg)}}
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,12px);background:#263d4a;color:#fff;padding:12px 18px;border-radius:12px;z-index:90;max-width:calc(100% - 32px);text-align:center;opacity:0;pointer-events:none;transition:.2s}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+dialog{border:0;border-radius:20px;max-width:min(720px,calc(100vw - 32px));padding:32px;color:var(--ink);box-shadow:0 15px 60px #0003}
+dialog::backdrop{background:#13242c88;backdrop-filter:blur(3px)}
+.dialog-close{position:absolute;right:12px;top:8px;width:32px;height:32px;font-size:28px}
+.dialog-content h2{margin-bottom:16px}
+.dialog-content p{margin:8px 0}
+.dialog-photo{max-width:100%;max-height:75vh;border-radius:12px}
+.dialog-content .primary{margin-top:16px;width:100%}
+.dialog-content textarea{width:100%;height:100px;padding:12px;border:1px solid #a8b4bd;border-radius:8px;background:var(--field)}
+
+@media(min-width:1024px) and (max-width:1240px){.header-inner{margin-left:24px;margin-right:24px}
+.page{margin-left:24px;margin-right:24px}
+.navbar nav{gap:24px}
+.location{flex-wrap:wrap}
+.location-info{flex-basis:100%}
+.location .map{display:none}
+.location h1{font-size:21px}
+.address{white-space:normal;height:auto}
+.metro{flex-wrap:wrap}
+.spec-columns{gap:16px}
+.building .text-link{font-size:12px}
+.details{padding:20px}
+.section-title h2{font-size:21px}
+.spec-columns dl>div{grid-template-columns:1.15fr 1fr}
+.rail-content{padding-left:20px;padding-right:20px}
+.rail .price-row strong{font-size:28px}
+}
+
+@media(max-width:1023px){body{min-width:320px}
+.desktop-only,.desktop-header,.rail{display:none!important}
+.mobile-only{display:block}
+.mobile-header{display:flex;height:52px;align-items:center}
+.header{height:52px}
+.mobile-header .menu{width:48px;height:52px}
+.mobile-header .logo{width:48px;height:52px;padding:0;justify-content:flex-start;padding-left:8px;padding-bottom:0}
+.logo-mark{width:32px;height:32px}
+.mobile-header-right{margin-left:auto;display:flex}
+.mobile-header-right button{width:40px;height:52px}
+.page{display:block;width:100%;margin:0 0 35px;max-width:none}
+.left-column{gap:8px}
+.hero{background:transparent;border-radius:0}
+.gallery{height:384px;border-radius:0}
+.gallery-track{scroll-snap-type:x mandatory}
+.photo{flex-basis:100%;scroll-snap-align:start;border-radius:0}
+.gallery-arrow{display:none}
+.gallery-controls{bottom:32px;justify-content:space-between}
+.gallery-controls .plan-button{width:40px;padding:12px;flex-shrink:0}
+.plan-button span{display:none}
+.gallery-compare{display:flex;position:absolute;right:12px;top:12px;background:rgba(36,38,41,.64);border-radius:50%}
+.gallery-tab{font-size:14px}
+.mobile-price{display:block;position:relative;margin-top:-20px;padding:16px;height:220px}
+.mobile-price-top{display:flex;height:54px;justify-content:space-between}
+.mobile-price-value{padding-top:4px;min-width:0}
+.mobile-price .price-row{gap:8px}
+.mobile-price .price-row strong{font-size:24px;line-height:32px}
+.ruble{margin-left:8px}
+.mobile-price .unit-price{margin-top:0}
+.price-actions{display:flex;gap:8px}
+.price-actions .icon-button{width:40px;height:40px;position:relative}
+.price-actions .icon{width:24px;height:24px;flex-basis:24px}
+.mobile-specs{display:flex;gap:12px;font-size:14px;line-height:18px;letter-spacing:-.28px;font-weight:500;padding-top:8px;padding-bottom:8px;white-space:nowrap;height:34px}
+.mobile-price .mortgage{margin-top:8px}
+.statistics{display:flex;align-items:center;gap:8px;font-size:12px;line-height:16px;letter-spacing:-.12px;color:var(--muted);margin-top:16px;white-space:nowrap}
+.statistics>span{display:inline-flex;align-items:center;gap:4px}
+.statistics .premium{margin-left:auto}
+.location{margin-top:8px;border-radius:20px;padding:16px;display:block;height:358px;overflow:hidden}
+.location-info{height:154px}
+.location h1{font-size:24px;line-height:32px;overflow:visible}
+.location-links{margin-top:4px}
+.location .address{flex-direction:row-reverse;margin-top:4px;gap:8px;align-items:flex-start;white-space:normal;height:36px;line-height:18px}
+.address p{flex:1}
+.address .copy{height:24px}
+.metro{margin-top:8px;flex-wrap:wrap;gap:2px 12px}
+.map{width:100%;height:112px;margin-top:16px;display:block}
+.map-chips{display:flex;gap:8px;overflow:auto;white-space:nowrap;scrollbar-width:none;margin-top:12px;margin-right:-16px;padding-right:16px;height:32px}
+.map-chips::-webkit-scrollbar{display:none}
+.map-chip{height:32px;border-radius:360px;background:var(--field);padding:6px 8px;gap:4px;flex-shrink:0;font-weight:500;font-size:16px;line-height:20px;letter-spacing:-.32px}
+.map-chip.selected{background:#e5f8ec}
+.details{padding:16px 16px 20px}
+.spec-columns{display:block}
+.section-title h2{font-size:20px;line-height:28px}
+.section-title{height:32px}
+.section-title .mobile-only{display:inline-flex}
+.building .section-title{height:32px}
+.spec-columns dl{margin-top:8px}
+.spec-columns dl>div{grid-template-columns:1fr 1fr;gap:4px}
+.apartment{padding-bottom:20px}
+.building-buttons{margin-top:20px;margin-bottom:20px;gap:8px;height:40px}
+.building-buttons .secondary{height:40px;padding:11px 16px;flex:1;display:inline-flex}
+.building-buttons .house-photos{flex:1;min-width:0}
+.description{margin-top:0}
+.description h2{font-size:20px;line-height:28px}
+.description-copy{margin-top:8px}
+.snow-hit{height:24px}
+.dialog-content h2{font-size:20px;line-height:28px}
+}
+
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}
+}
+
+/* Figma's renderer uses grayscale antialiasing and a slightly cooler canvas. */
+body{-webkit-font-smoothing:antialiased;--bg:#eceef0}
+
+.section-title{align-items:flex-start}
+
+.gallery{border-radius:20px}
+
+.gallery-tabs{width:241px;flex-shrink:0}
+
+.gallery-tab:first-child{flex:0 0 144px}
+
+.gallery-tab:last-child{flex:1}
+
+.apartment>.more-button{width:73px;gap:4px}
+
+.coins{object-fit:fill}
+
+.question-chip{font-weight:500}
+
+.sr-only{top:0;left:0}
+
+@media(max-width:1023px){.gallery{border-radius:0}
+.building-buttons .secondary,.building-buttons .house-photos{width:calc((100% - 8px)/2);flex:0 0 calc((100% - 8px)/2)}
+.mobile-header-right [aria-label="Разместить объявление"]{position:relative}
+.mobile-header-right [aria-label="Разместить объявление"] .icon{visibility:hidden}
+.mobile-header-right [aria-label="Разместить объявление"]:after{content:'';position:absolute;width:16px;height:16px;background:#53b375;mask:url('assets/2ecb9.svg') center/16px 16px no-repeat}
+.mortgage-second{padding-left:15px}
+.mortgage-first{padding-right:9px}
+}
+
+@media(max-width:359px){.statistics{font-size:11px;gap:6px;letter-spacing:-.2px}
+.mortgage{gap:2px}
+.mortgage .coins{width:40px;height:40px}
+.mortgage-first{padding-right:6px}
+.mortgage-second{padding-left:8px}
+.mortgage strong{font-size:13px}
+.mortgage small{font-size:11px}
+.location-links{gap:8px}
+.location-links .text-link{font-size:13px}
+.location h1{font-size:22px}
+.gallery-tabs{width:233px}
+.gallery-tab:first-child{flex-basis:140px}
+.gallery-tab{padding-left:10px;padding-right:10px}
+}
+
+@media(min-width:600px) and (max-width:1023px){.page{max-width:600px;margin-left:auto;margin-right:auto}
+.map{background:#edf3ff}
+.map img{object-fit:contain}
+}
+
+
+#snow-glow{position:fixed;left:0;right:0;bottom:0;height:clamp(100px,22vh,196px);z-index:49;pointer-events:none;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,.035) 30%,rgba(255,255,255,.2) 60%,rgba(255,255,255,.48) 82%,rgba(255,255,255,.82) 100%);opacity:0;transition:opacity 650ms ease-out}
+
+#snow-glow.is-active{opacity:1;transition-duration:360ms}
+
+#snow-glow.no-fade{transition:none}
+
+@media(max-width:1023px){#snow-glow{height:min(22vh,140px)}
+}
+
+@media(prefers-reduced-motion:reduce){#snow-glow{opacity:0!important;transition:none}
+#snow-trigger img{transition:none}
+#snow-trigger.is-active img{animation:none}
+}
