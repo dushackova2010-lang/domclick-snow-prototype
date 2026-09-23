@@ -36,6 +36,7 @@
   let activeTouch = null;
   let cycleRunning = false;
   let cycleCount = 0;
+  let snowLevel = 0;
   let shovelDirection = -1;
   let shovelDirectionReferenceX = null;
 
@@ -71,9 +72,12 @@
 
   function capAt(i) {
     const edge = .7 + .3 * Math.min(1, i / 6, (N - 1 - i) / 6);
-    return (mobile.matches
+    const base = mobile.matches
       ? 60 + 7 * Math.sin(i * .105) + 5 * Math.sin(i * .23 + 1)
-      : 78 + 10 * Math.sin(i * .105) + 8 * Math.sin(i * .23 + 1)) * edge;
+      : 78 + 10 * Math.sin(i * .105) + 8 * Math.sin(i * .23 + 1);
+    const step = mobile.matches ? 34 : 44;
+    const limit = Math.min(mobile.matches ? 220 : 280, height * (mobile.matches ? .3 : .36));
+    return Math.min(base + Math.max(0, snowLevel - 1) * step, limit) * edge;
   }
 
   function measure() {
@@ -134,11 +138,11 @@
       fill.addColorStop(.65, '#fbfdff');
       fill.addColorStop(1, '#dcebf5');
       ctx.fillStyle = fill;
-      ctx.strokeStyle = 'rgba(158,187,207,.55)';
-      ctx.lineWidth = .65;
-      ctx.shadowColor = 'rgba(113,151,177,.28)';
-      ctx.shadowBlur = 4;
-      ctx.shadowOffsetY = 2;
+      ctx.strokeStyle = 'rgba(122,151,174,.72)';
+      ctx.lineWidth = .9;
+      ctx.shadowColor = 'rgba(56,82,105,.42)';
+      ctx.shadowBlur = 18;
+      ctx.shadowOffsetY = -6;
       ctx.beginPath();
       ctx.moveTo(x, y + 1);
       ctx.lineTo(x, y - card.h[0]);
@@ -152,6 +156,8 @@
       ctx.closePath();
       ctx.fill();
       ctx.shadowBlur = 0;
+      ctx.shadowColor = 'transparent';
+      ctx.shadowOffsetY = 0;
       ctx.stroke();
       ctx.restore();
     }
@@ -245,8 +251,10 @@
   }
 
   function play() {
-    if (cycleRunning) return;
     measure();
+    const alreadyFalling = cycleRunning;
+    const snowRemains = cards.some(card => card.h.some(value => value > 1));
+    snowLevel = alreadyFalling || snowRemains ? snowLevel + 1 : 1;
     totalLanded = 0;
     cycleCount++;
     if (reduced.matches) {
@@ -262,9 +270,11 @@
       return;
     }
     setCycleState(true);
-    status.textContent = 'Начался снегопад. Снег оседает внизу окна. Его можно убрать курсором-лопатой или пальцем.';
-    until = performance.now() + 7000;
-    budget = 5;
+    status.textContent = alreadyFalling
+      ? 'Снегопад продлён, сугроб станет выше.'
+      : 'Начался снегопад. Снег оседает внизу окна. Его можно убрать курсором-лопатой или пальцем.';
+    until = Math.max(performance.now(), until) + 7000;
+    budget += 5;
     syncGlow();
     ensureFrame();
   }
@@ -298,6 +308,7 @@
     }
     draw();
     updateHits();
+    if (cards.every(c => !c.h.some(value => value > 1))) snowLevel = 0;
     if (debris.length) ensureFrame();
   }
 
@@ -367,6 +378,7 @@
     card.hit.addEventListener('click', e => {
       if (e.detail === 0) {
         card.h.fill(0);
+        snowLevel = 0;
         debris = [];
         lastPointer = null;
         document.body.classList.remove('snow-clearing');
@@ -393,6 +405,7 @@
       animating: !!frame,
       cycleRunning,
       cycleCount,
+      snowLevel,
       particles: flakes.length,
       particleSamples: flakes.slice(0, 200).map(p => ({
         x: p.x,
