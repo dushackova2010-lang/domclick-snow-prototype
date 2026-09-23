@@ -44,6 +44,7 @@
   let debris = [];
   let frame = 0;
   let lastTime = 0;
+  let lastSettle = 0;
   let until = 0;
   let budget = 0;
   let lastPointer = null;
@@ -127,13 +128,28 @@
 
   function deposit(card, x, amount) {
     const center = indexAt(card, x);
-    const radius = Math.max(2, Math.ceil(18 / card.rect.w * N));
+    const footprint = mobile.matches ? 34 : 48;
+    const radius = Math.max(4, Math.ceil(footprint / card.rect.w * N));
+    const spreadAmount = amount * 18 / footprint * .85;
     for (let i = Math.max(0, center - radius); i <= Math.min(N - 1, center + radius); i++) {
-      const f = Math.exp(-Math.pow((i - center) / radius, 2) * 2.5);
+      const f = Math.exp(-Math.pow((i - center) / radius, 2) * 1.5);
       const edge = .7 + .3 * Math.min(1, i / 6, (N - 1 - i) / 6);
-      card.h[i] = Math.min(capAt(i), card.h[i] + amount * f * edge);
+      card.h[i] = Math.min(capAt(i), card.h[i] + spreadAmount * f * edge);
     }
     totalLanded++;
+  }
+
+  function settle(card) {
+    const next = new Float32Array(N);
+    for (let i = 0; i < N; i++) {
+      const left2 = card.h[Math.max(0, i - 2)];
+      const left1 = card.h[Math.max(0, i - 1)];
+      const right1 = card.h[Math.min(N - 1, i + 1)];
+      const right2 = card.h[Math.min(N - 1, i + 2)];
+      const neighbors = (left2 + 2 * left1 + 3 * card.h[i] + 2 * right1 + right2) / 9;
+      next[i] = Math.min(capAt(i), (card.h[i] + neighbors) / 2);
+    }
+    card.h.set(next);
   }
 
   function particleOpacity(p) {
@@ -269,6 +285,11 @@
       }
       return p.y < height + p.size && p.x > -p.size && p.x < width + p.size;
     });
+
+    if ((now < until || flakes.length) && now - lastSettle > 110) {
+      cards.forEach(settle);
+      lastSettle = now;
+    }
 
     debris = debris.filter(d => {
       d.x += d.vx * dt;
