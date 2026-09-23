@@ -72,8 +72,8 @@
   function capAt(i) {
     const edge = .7 + .3 * Math.min(1, i / 6, (N - 1 - i) / 6);
     return (mobile.matches
-      ? 30 + 3.5 * Math.sin(i * .105) + 2.5 * Math.sin(i * .23 + 1)
-      : 39 + 5 * Math.sin(i * .105) + 4 * Math.sin(i * .23 + 1)) * edge;
+      ? 60 + 7 * Math.sin(i * .105) + 5 * Math.sin(i * .23 + 1)
+      : 78 + 10 * Math.sin(i * .105) + 8 * Math.sin(i * .23 + 1)) * edge;
   }
 
   function measure() {
@@ -219,7 +219,7 @@
         if (!card.visible || y < 0 || p.x < x || p.x > x + w) continue;
         const surface = y - card.h[indexAt(card, p.x)];
         if (p.y + p.size * .28 >= surface) {
-          deposit(card, p.x, 5.7 + p.size * .11);
+          deposit(card, p.x, 10 + p.size * .18);
           return false;
         }
       }
@@ -253,7 +253,7 @@
       setCycleState(true);
       syncGlow(performance.now(), true);
       for (const card of cards.filter(c => c.visible)) {
-        for (let i = 0; i < 100; i++) deposit(card, card.rect.x + Math.random() * card.rect.w, 4.5);
+        card.h.forEach((_, i) => { card.h[i] = capAt(i) * .9; });
       }
       draw();
       updateHits();
@@ -278,7 +278,7 @@
       const binX = card.rect.x + i / (N - 1) * card.rect.w;
       const dx = Math.abs(binX - x);
       if (dx > radius || y + 10 < card.rect.y - card.h[i] || y - 12 > card.rect.y + 3) continue;
-      const cut = Math.min(card.h[i], (1 - dx / radius) * 16);
+      const cut = Math.min(card.h[i], (1 - dx / radius) * 26);
       card.h[i] -= cut;
       removed += cut;
     }
