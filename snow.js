@@ -1,6 +1,8 @@
 (() => {
   const canvas = document.getElementById('snow-canvas');
   const ctx = canvas.getContext('2d');
+  const webglCanvas = document.getElementById('snow-webgl');
+  const webglRenderer = window.createSnowWebglRenderer?.(webglCanvas) || null;
   const glow = document.getElementById('snow-glow');
   const trigger = document.getElementById('snow-trigger');
   const flakeAsset = trigger.querySelector('img');
@@ -105,6 +107,7 @@
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
+    webglRenderer?.resize(width, height);
     for (const card of cards) {
       card.rect = { x: 0, y: height, w: width };
       card.h.forEach((v, i) => { card.h[i] = Math.min(v, capAt(i)); });
@@ -159,6 +162,8 @@
 
   function draw() {
     ctx.clearRect(0, 0, width, height);
+    const renderedByWebgl = webglRenderer?.render(flakes, cards[0].h, width, height, performance.now()) || false;
+    if (!renderedByWebgl) {
     for (const card of cards) {
       if (!card.visible || !card.h.some(v => v > .05)) continue;
       const { x, y, w } = card.rect;
@@ -227,6 +232,7 @@
         ctx.restore();
       }
     }
+    }
 
     for (const d of debris) {
       ctx.globalAlpha = Math.min(1, d.life * 2);
@@ -250,27 +256,35 @@
     const dt = Math.min(.04, Math.max(0, (now - lastTime) / 1000));
     lastTime = now;
     if (now < until && !reduced.matches) {
-      budget += dt * (mobile.matches ? 32 : 54);
+      budget += dt * (mobile.matches ? 54 : 96);
       while (budget >= 1 && flakes.length < 500) {
         budget--;
-        const size = 14 + Math.random() * 18;
+        const layerChance = Math.random();
+        const layer = layerChance < .5 ? 0 : layerChance < .86 ? 1 : 2;
+        const size = layer === 0 ? 4 + Math.random() * 3
+          : layer === 1 ? 8 + Math.random() * 5
+          : 15 + Math.random() * 8;
         flakes.push({
           x: Math.random() * width,
           y: -size,
           size,
-          vy: Math.max(132, height * .2) + Math.random() * 74,
-          vx: (Math.random() - .5) * 18,
+          vy: (layer === 0 ? 125 : layer === 1 ? 170 : 215) + Math.random() * 55,
+          vx: (Math.random() - .5) * 15,
           phase: Math.random() * Math.PI * 2,
-          alpha: .58 + Math.random() * .4,
+          alpha: (layer === 0 ? .38 : layer === 1 ? .55 : .72) + Math.random() * .2,
           displayAlpha: 0,
           angle: Math.random() * Math.PI * 2,
-          spin: (Math.random() - .5) * 1.7
+          spin: (Math.random() - .5) * (layer === 2 ? 1.8 : 1.1),
+          seed: Math.random() * 1000,
+          layer,
+          sway: (layer + 1) * (5 + Math.random() * 7)
         });
       }
     }
 
     flakes = flakes.filter(p => {
-      p.x += (p.vx + Math.sin(now / 780 + p.phase) * 11) * dt;
+      const wind = Math.sin(now / 3800) * 9 + Math.sin(now / 1200 + .4) * 4;
+      p.x += (p.vx + wind * (.5 + p.layer * .3) + Math.sin(now / 780 + p.phase) * p.sway) * dt;
       p.y += p.vy * dt;
       p.angle += p.spin * dt;
       p.displayAlpha = particleOpacity(p);
@@ -279,7 +293,7 @@
         if (!card.visible || y < 0 || p.x < x || p.x > x + w) continue;
         const surface = y - card.h[indexAt(card, p.x)];
         if (p.y + p.size * .28 >= surface) {
-          deposit(card, p.x, 10 + p.size * .18);
+          deposit(card, p.x, 7 + p.size * .35);
           return false;
         }
       }
@@ -365,10 +379,7 @@
         }
       }
     }
-    draw();
-    updateHits();
-    if (cards.every(c => !c.h.some(value => value > 1))) snowLevel = 0;
-    if (debris.length) ensureFrame();
+    return removed;
   }
 
   function nearCard(x, y) {
@@ -397,8 +408,16 @@
     shovel.style.top = (y - 62) + 'px';
     const prev = lastPointer && lastPointer.card === card ? lastPointer : { x, y };
     const steps = Math.min(100, Math.max(1, Math.ceil(Math.hypot(x - prev.x, y - prev.y) / 6)));
+    let removed = 0;
     for (let i = 1; i <= steps; i++) {
-      brush(card, prev.x + (x - prev.x) * i / steps, prev.y + (y - prev.y) * i / steps, Math.sign(x - prev.x));
+      removed += brush(card, prev.x + (x - prev.x) * i / steps, prev.y + (y - prev.y) * i / steps, Math.sign(x - prev.x));
+    }
+    if (removed > 0) {
+      for (let i = 0; i < 4; i++) settle(card);
+      draw();
+      updateHits();
+      if (cards.every(c => !c.h.some(value => value > 1))) snowLevel = 0;
+      if (debris.length) ensureFrame();
     }
     lastPointer = { x, y, card };
   }
@@ -478,7 +497,7 @@
       debris: debris.length,
       glowActive: glow.classList.contains('is-active'),
       fadeZone: FADE_ZONE,
-      drawMode: 'png-image',
+      drawMode: webglRenderer?.available ? 'webgl-cinematic-flakes-and-surface' : 'canvas-fallback',
       snowflakeReady: flakeAsset.complete && !!flakeAsset.naturalWidth,
       snowflakeSource: flakeAsset.currentSrc || flakeAsset.src,
       shovelSource: shovel.currentSrc || shovel.src,
